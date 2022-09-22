@@ -5,17 +5,10 @@ class CheckoutController < ApplicationController
         @session = Stripe::Checkout::Session.create({
             customer: current_user.stripe_customer_id,
             payment_method_types: ['card'],
-            line_items: [
-                price_data: {
-                    unit_amount: product.price,
-                    currency: "usd",
-                    product_data: {
-                        name: product.name,
-                        description: 'test description',
-                    }
-                },
+            line_items: [{
+                price: product.stripe_price_id,
                 quantity: 1
-            ],
+            }],
             mode: 'payment',
             success_url: root_url,
             cancel_url: root_url,
